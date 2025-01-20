@@ -1,0 +1,53 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+
+body {
+	background: var(--gradient-bg);
+	font-family: var(--font-family);
+}
+
+a {
+	color: unset;
+	text-decoration: none;
+}
+
+a:hover,
+button:hover {
+	cursor: pointer;
+}
+
+.section-type {
+	margin: 2rem 6rem;
+	height: 75vh;
+}
+
+.title-heading {
+	color: var(--color-heading);
+}
+
+.gradient-bg {
+	background: -moz-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	background: -webkit-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	background: -o-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F3FAFF',
+			endColorstr='#F8FCFF',
+			GradientType=0);
+
+	background: -ms-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	background: linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+}
+
+.gradient-text {
+	background: var(--gradient-text);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
