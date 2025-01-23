@@ -42,7 +42,7 @@ const WebLiveCapture = ({ onPeopleCountChange }) => {
 
 		const interval = setInterval(() => {
 			capture();
-		}, 500); 
+		}, 800); 
 
 
 		return () => clearInterval(interval);

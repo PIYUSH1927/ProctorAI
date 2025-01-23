@@ -173,8 +173,10 @@ useEffect(() => {
       enableForm();
     }
     if (phoneCount > 0) {
+      setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
       disableForm();
       setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
+      disableForm();
       incrementWarningCount();
     }
   }, [peopleCount, phoneCount]);
@@ -267,9 +269,6 @@ useEffect(() => {
         setIsDevToolsOpen(true);
         setShowMessage('Warning : Your exam will terminate. Please close devtools.');
         disableForm();
-
-
-
       }
     } else {
       if (isDevToolsOpenn) {
