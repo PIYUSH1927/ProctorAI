@@ -16,6 +16,10 @@ CORS(app)
 
 multiple_people_detector = hub.load("https://tfhub.dev/tensorflow/efficientdet/d0/1")
 
+COCO_LABELS = {
+    1: "person",
+    77: "cell phone"
+}
 
 
 def readb64(uri):
@@ -27,27 +31,35 @@ def readb64(uri):
 
 
 @app.route('/predict_people',methods=['GET','POST'])
-def predict() : 
-    data = request.get_json(force = True)
-    image= readb64(data['img'])
-    im_width, im_height = image.shape[0], image.shape[1]
-    image = image.reshape((1, image.shape[0], image.shape[1], 3))
-    data = multiple_people_detector(image)
+def predict():
+    data = request.get_json(force=True)
+    image = readb64(data['img'])
 
-    boxes = data['detection_boxes'].numpy()[0]
-    classes = data['detection_classes'].numpy()[0]
-    scores = data['detection_scores'].numpy()[0]
+    im_height, im_width = image.shape[:2]
+    image = np.expand_dims(image, axis=0) 
 
+    result = multiple_people_detector(image)
+
+    boxes = result['detection_boxes'].numpy()[0]  
+    classes = result['detection_classes'].numpy()[0].astype(int) 
+    scores = result['detection_scores'].numpy()[0]  
+    
     threshold = 0.5
-    people = 0
-    for i in range(int(data['num_detections'][0])):
-        if classes[i] == 1 and scores[i] > threshold:
-            people += 1
-            ymin, xmin, ymax, xmax = boxes[i]
-            (left, right, top, bottom) = (xmin * im_width, xmax * im_width,
-                                          ymin * im_height, ymax * im_height)
+    people_count = 0
+    phone_count = 0
 
-    return jsonify({ 'people' : int(people) , 'image' : 'image'})
+    for i in range(len(scores)):
+        if scores[i] > threshold:
+            class_id = classes[i]
+            if class_id == 1: 
+                people_count += 1
+            elif class_id == 77:  
+                phone_count += 1
+
+    return jsonify({
+        'people': people_count,
+        'phones': phone_count
+    })
 
 
 if __name__ == '__main__':

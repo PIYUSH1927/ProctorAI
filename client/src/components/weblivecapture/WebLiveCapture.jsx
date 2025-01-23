@@ -13,6 +13,7 @@ const WebLiveCapture = ({ onPeopleCountChange }) => {
 	const webcamRef = React.useRef(null);
 	const [ image, setImage ] = useState('');
 	const [peopleCount, setPeopleCount] = useState(0);
+	const [phoneCount, setPhoneCount] = useState(0);
 
 
 	const capture = React.useCallback(() => {
@@ -21,8 +22,16 @@ const WebLiveCapture = ({ onPeopleCountChange }) => {
 
         axios.post('http://localhost:8080/predict_people', { img: imageSrc })
             .then(response => {
-                setPeopleCount(response.data.people);  
-				onPeopleCountChange(response.data.people);
+
+				const newPeopleCount = response.data.people;
+                const newPhoneCount = response.data.phones;
+
+                
+					setPeopleCount(newPeopleCount);
+					setPhoneCount(newPhoneCount);
+
+					onPeopleCountChange(newPeopleCount, newPhoneCount);
+			
             })
             .catch(error => {
                 console.error('Error predicting people:', error);
@@ -33,7 +42,7 @@ const WebLiveCapture = ({ onPeopleCountChange }) => {
 
 		const interval = setInterval(() => {
 			capture();
-		}, 1000); 
+		}, 500); 
 
 
 		return () => clearInterval(interval);

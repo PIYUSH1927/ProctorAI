@@ -6,12 +6,12 @@ import './landing.css';
 import { Link } from 'react-router-dom';
 
 const featureList = [
-	'Multiple People Detection',
-	'Desktop Change Detection',
-	'Devtools Check',
+    'Multiple People Detection',
+    'Mobile Phone Detection',
+    'Desktop Change Detection',
 	'Full Screen Check',
-	'Multiple Tabs Check',
-	'Activity Monitoring'
+    'Devtools Check',
+    'Multiple Tabs Check',
 ];
 
 const Landing = () => {

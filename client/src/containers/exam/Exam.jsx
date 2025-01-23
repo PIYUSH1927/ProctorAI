@@ -33,6 +33,7 @@ const Exam = ({ examName = '', formLink = '' }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const [peopleCount, setPeopleCount] = useState(0);
+  const [phoneCount, setPhoneCount] = useState(0);
 
 
   const fetchExamDetails = async () => {
@@ -56,7 +57,6 @@ const Exam = ({ examName = '', formLink = '' }) => {
     if (test_code && registration_number) {
       fetchExamDetails();
     }
-
     setShowPopup(true);
   }, [test_code, registration_number]);
 
@@ -67,32 +67,33 @@ const Exam = ({ examName = '', formLink = '' }) => {
     navigate('/');
   };
 
-
-  const incrementWarningCount = async () => {
-
+  const incrementWarningCount = () => {
     if (!isTestStarted) return;
 
     const newWarningCount = warningCnt + 1;
-
-    await updateWarningCount(newWarningCount);
-
-    setWarningCnt(newWarningCount);
+    setWarningCnt(newWarningCount + 1);
 
     if (newWarningCount > 3) {
-      terminateExam();
+        terminateExam();
     }
-  };
+};
 
-  const updateWarningCount = async (newWarningCount) => {
-    try {
-      await axios.put(
-        `http://localhost:5000/api/test-taker/${test_code}/${registration_number}/warningCount`,
-        { warningCount: newWarningCount }
-      );
-    } catch (error) {
-      console.error('Error updating warning count:', error);
-    }
-  };
+useEffect(() => {
+    const updateWarningCount = async () => {
+        if (warningCnt > 0) {  // Ensure warning count is valid before sending
+            try {
+                await axios.put(
+                    `http://localhost:5000/api/test-taker/${test_code}/${registration_number}/warningCount`,
+                    { warningCount: warningCnt }
+                );
+            } catch (error) {
+                console.error('Error updating warning count:', error);
+            }
+        }
+    };
+
+    updateWarningCount();
+}, [warningCnt]);
 
   const overlay = document.getElementById('overlay');
   const formBlur = document.getElementById('form-blur');
@@ -171,11 +172,17 @@ const Exam = ({ examName = '', formLink = '' }) => {
       setShowMessage(''); 
       enableForm();
     }
-  }, [peopleCount]);
+    if (phoneCount > 0) {
+      disableForm();
+      setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
+      incrementWarningCount();
+    }
+  }, [peopleCount, phoneCount]);
 
 
-  const handlePeopleCount = (count) => {
-    setPeopleCount(count);
+  const handleCountsChange = (people, phones) => {
+    setPeopleCount(people);
+    setPhoneCount(phones);
   };
 
 
@@ -376,7 +383,7 @@ const Exam = ({ examName = '', formLink = '' }) => {
 
       <div className="left-column">
         <div className="image-capture">
-          <WebLiveCapture onPeopleCountChange={handlePeopleCount} />
+          <WebLiveCapture onPeopleCountChange={handleCountsChange} />
         </div>
         <div className="exam-details">
           <h3 className="title-heading">Student Details</h3>
