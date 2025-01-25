@@ -7,6 +7,7 @@ click==8.0.3
 colorama==0.4.4
 cycler==0.11.0
 Flask==2.0.2
+flask-cors
 flatbuffers==2.0
 fonttools==4.28.5
 gast==0.4.0
