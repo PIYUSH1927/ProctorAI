@@ -17,7 +17,7 @@ import Cookies from 'js-cookie';
 
 const App = () => {
   const isAuthenticated = !!Cookies.get('token'); 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     // ✅ Update state on window resize
