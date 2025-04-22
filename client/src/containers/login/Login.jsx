@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../components/navbar/Navbar';
 import { CommonInput, CtaButton } from '../../components';
 import axios from 'axios';
@@ -11,7 +11,21 @@ const inputField = ['Email ID', 'Password'];
 const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
+	const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	useEffect(() => {
+		const query = new URLSearchParams(location.search);
+		if (query.get('registered') === 'success') {
+			setShowSuccessMessage(true);
+			const timer = setTimeout(() => {
+				setShowSuccessMessage(false);
+			}, 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [location]);
 
 	const handleLogin = async () => {
 		try {
@@ -37,13 +51,17 @@ const Login = () => {
 		}
 	};
 
-
 	const onLoginClick = async (e) => {
 		e.preventDefault();
+		setIsLoading(true);
+		
 		const loginSuccess = await handleLogin();
+		
 		if (loginSuccess) {
 			navigate('/dashboard');
 			window.location.href = '/dashboard';
+		} else {
+			setIsLoading(false);
 		}
 	};
 
@@ -61,6 +79,39 @@ const Login = () => {
 				>
 					Admin Login
 				</h1>
+
+				{showSuccessMessage && (
+					<div style={{
+						backgroundColor: '#d4edda',
+						color: '#155724',
+						padding: '10px 20px',
+						borderRadius: '8px',
+						border: '1px solid #c3e6cb',
+						fontSize: '14px',
+						fontFamily: "'Poppins', sans-serif",
+						display: 'flex',
+						alignItems: 'center',
+						margin:"0px",
+						marginBottom:"-20px",
+						marginTop:"-10px"
+					}}>
+						<span>
+							<strong>Account created successfully!</strong> Please log in with your credentials to access your account.
+						</span>
+						<button 
+							onClick={() => setShowSuccessMessage(false)}
+							style={{
+								background: 'none',
+								border: 'none',
+								cursor: 'pointer',
+								fontSize: '18px',
+								color: '#155724'
+							}}
+						>
+							×
+						</button>
+					</div>
+				)}
 
 				<div
 					style={{
@@ -80,10 +131,30 @@ const Login = () => {
 								}
 								value={index === 0 ? email : password}
 								type={index === 0 ? "text" : "password"}
+								disabled={isLoading}
 							/>
 						))}
 						<div style={{ position: 'relative', right: '30px' }}>
-							<CtaButton text="Login" type="button" onClick={onLoginClick} />
+							<CtaButton 
+								text={isLoading ? "Logging in..." : "Login"} 
+								type="button" 
+								onClick={onLoginClick} 
+								disabled={isLoading}
+							/>
+							{isLoading && (
+								<div className="spinner" style={{
+									width: '20px',
+									height: '20px',
+									border: '3px solid rgba(0, 0, 0, 0.1)',
+									borderRadius: '50%',
+									borderTop: '3px solid #007BFF',
+									animation: 'spin 1s linear infinite',
+									position: 'absolute',
+									right: '-30px',
+									top: '50%',
+									transform: 'translateY(-50%)'
+								}}></div>
+							)}
 						</div>
 					</form>
 					<p
@@ -107,6 +178,15 @@ const Login = () => {
 					</p>
 				</div>
 			</div>
+		
+			<style>
+				{`
+					@keyframes spin {
+						0% { transform: rotate(0deg); }
+						100% { transform: rotate(360deg); }
+					}
+				`}
+			</style>
 		</div>
 	);
 };

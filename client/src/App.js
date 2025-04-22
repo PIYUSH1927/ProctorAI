@@ -13,14 +13,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Cookies from 'js-cookie';
 
-
-
 const App = () => {
   const isAuthenticated = !!Cookies.get('token'); 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    // ✅ Update state on window resize
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
     };
@@ -29,7 +26,6 @@ const App = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ If screen width is less than 1024px, show mobile message
   if (isMobile) {
     return (
       <div className="mobile-message">
@@ -43,28 +39,39 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          {/* Public routes */}
-          <Route exact path="/" element={<Landing />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/exam" element={<Exam />} />
+          <Route 
+            exact 
+            path="/" 
+            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Landing />} 
+          />
+          <Route 
+            path="/register" 
+            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} 
+          />
+          <Route 
+            path="/login" 
+            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} 
+          />
+          <Route 
+            path="/exam" 
+            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Exam />} 
+          />
 
-          {/* Protected routes */}
           <Route 
             path="/dashboard" 
             element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
           />
           <Route 
             path="/status" 
-            element={Cookies.get('token') ? <Status /> : <Navigate to="/login" />} 
+            element={isAuthenticated ? <Status /> : <Navigate to="/login" />} 
           />
           <Route 
             path="/create" 
-            element={Cookies.get('token') ? <Create /> : <Navigate to="/login" />} 
+            element={isAuthenticated ? <Create /> : <Navigate to="/login" />} 
           />
 
-          {/* Catch-all route to redirect if no matching path */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/"} />} 
+          />
         </Routes>
       </BrowserRouter>
     </div>

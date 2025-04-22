@@ -11,6 +11,7 @@ const Register = () => {
 		fullName: '',
 		password: '',
 	});
+	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const handleChange = (e) => {
@@ -20,6 +21,7 @@ const Register = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setIsLoading(true);
 
 		const data = {
 			email: formData.email,
@@ -31,11 +33,11 @@ const Register = () => {
 			const response = await axios.post('http://localhost:5000/api/register', data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
-			alert('Registration successful!');
-			navigate('/login');
+			navigate('/login?registered=success');
 		} catch (error) {
 			console.error('Registration failed:', error);
 			alert('Something went wrong during registration!');
+			setIsLoading(false);
 		}
 	};
 
@@ -48,7 +50,6 @@ const Register = () => {
 			<div
 				className="register-form"
 				style={{
-
 					padding: '35px',
 					borderRadius: '12px',
 					border: '1px solid #ddd',
@@ -73,6 +74,8 @@ const Register = () => {
 								fontFamily: "'Poppins', sans-serif",
 								outline: 'none',
 							}}
+							disabled={isLoading}
+							required
 						/>
 					</div>
 					<div style={{ marginBottom: '15px', position: "relative", right: "10px" }}>
@@ -91,6 +94,8 @@ const Register = () => {
 								fontFamily: "'Poppins', sans-serif",
 								outline: 'none',
 							}}
+							disabled={isLoading}
+							required
 						/>
 					</div>
 					<div style={{ marginBottom: '20px', position: "relative", right: "10px" }}>
@@ -109,26 +114,46 @@ const Register = () => {
 								fontFamily: "'Poppins', sans-serif",
 								outline: 'none',
 							}}
+							disabled={isLoading}
+							required
 						/>
 					</div>
-					<CtaButton
-						text="Register"
-						type="submit"
-						style={{
-							width: '100%',
-							padding: '12px',
-							fontSize: '16px',
-							fontWeight: 'bold',
-							borderRadius: '8px',
-							fontFamily: "'Poppins', sans-serif",
-						}}
-					/>
+					<div style={{ position: 'relative' }}>
+						<CtaButton
+							text={isLoading ? "Registering..." : "Register"}
+							type="submit"
+							style={{
+								width: '100%',
+								padding: '12px',
+								fontSize: '16px',
+								fontWeight: 'bold',
+								borderRadius: '8px',
+								fontFamily: "'Poppins', sans-serif",
+							}}
+							disabled={isLoading}
+						/>
+						{isLoading && (
+							<div className="spinner" style={{
+								width: '20px',
+								height: '20px',
+								border: '3px solid rgba(0, 0, 0, 0.1)',
+								borderRadius: '50%',
+								borderTop: '3px solid #007BFF',
+								animation: 'spin 1s linear infinite',
+								position: 'absolute',
+								right: '-30px',
+								top: '50%',
+								transform: 'translateY(-50%)'
+							}}></div>
+						)}
+					</div>
 				</form>
 				<p
 					style={{
 						textAlign: 'center',
 						fontSize: '14px',
 						fontFamily: "'Poppins', sans-serif",
+						marginTop: '15px'
 					}}
 				>
 					Already have an account?{' '}
@@ -140,6 +165,15 @@ const Register = () => {
 					</span>
 				</p>
 			</div>
+
+			<style>
+				{`
+					@keyframes spin {
+						0% { transform: rotate(0deg); }
+						100% { transform: rotate(360deg); }
+					}
+				`}
+			</style>
 		</div>
 	);
 };
