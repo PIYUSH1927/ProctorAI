@@ -8,13 +8,10 @@ const NavLinks = () => (
 			<Link to="/" >Home</Link>
 		</p>
 		<p>
-			About
+			<Link to="/about">About</Link>
 		</p>
 		<p>
-			Community
-		</p>
-		<p>
-			Contact Us
+			<Link to="/contact">Contact Us</Link>
 		</p>
 		<p>
 			<Link to="/login">Login</Link>
@@ -30,23 +27,23 @@ const Navbar = () => {
 					src="/favicon.ico"
 					alt="ProctorAI logo"
 					style={{
-						width: '55px', 
-						height: '55px', 
-						marginRight: '10px', 
+						width: '55px',
+						height: '55px',
+						marginRight: '10px',
 					}}
 				/>
 				<a href="/">
-				<span
-					style={{
-						fontSize: '1.8rem',
-						fontWeight: 'bold',
-						position:"relative",
-						bottom:"15px"
+					<span
+						style={{
+							fontSize: '1.8rem',
+							fontWeight: 'bold',
+							position: "relative",
+							bottom: "15px"
 
-					}}
-				>
-					ProctorAI
-				</span>
+						}}
+					>
+						ProctorAI
+					</span>
 				</a>
 			</div>
 			<div className="landing-navbar-links">

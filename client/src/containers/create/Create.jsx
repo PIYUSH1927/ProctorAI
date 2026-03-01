@@ -29,8 +29,8 @@ const Create = () => {
         duration: '',
         startTime: '',
     });
-    const [errorMessage, setErrorMessage] = useState(''); 
-    const [showErrorModal, setShowErrorModal] = useState(false); 
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     const handleChange = (index, value) => {
         const keys = [
@@ -68,9 +68,9 @@ const Create = () => {
             return;
         }
 
-        const [date, time] = formData.startTime.split(' '); 
-        const [day, month, year] = date.split('/'); 
-        const [hour, minute] = time.split(':'); 
+        const [date, time] = formData.startTime.split(' ');
+        const [day, month, year] = date.split('/');
+        const [hour, minute] = time.split(':');
 
         const startTime = new Date(`${month}/${day}/${year} ${hour}:${minute}:00`);
 
@@ -80,15 +80,15 @@ const Create = () => {
         const formattedData = {
             email: formData.email,
             test_name: formData.testName,
-            test_link_by_user: formData.questionPaperLink, 
-            start_time: startTime.toISOString(), 
-            end_time: endTime.toISOString(), 
+            test_link_by_user: formData.questionPaperLink,
+            start_time: startTime.toISOString(),
+            end_time: endTime.toISOString(),
             no_of_candidates_appear: formData.totalCandidates,
-            total_threshold_warnings: 3 
+            total_threshold_warnings: 3
         };
 
         try {
-            const response = await axios.post('http://localhost:3000/api/create-test', formattedData, {
+            const response = await axios.post('https://proctorai2-1.onrender.com/api/create-test', formattedData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

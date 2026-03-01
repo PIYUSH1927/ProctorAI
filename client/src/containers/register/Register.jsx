@@ -30,7 +30,7 @@ const Register = () => {
 		};
 
 		try {
-			const response = await axios.post('http://localhost:5000/api/register', data, {
+			const response = await axios.post('https://proctorai2-1.onrender.com/api/register', data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
 			navigate('/login?registered=success');
@@ -42,138 +42,98 @@ const Register = () => {
 	};
 
 	return (
-		<div className="user-register" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-			<Navbar />
-			<h1 className="title-heading" style={{ marginTop: '100px', fontSize: '2rem', fontFamily: "'Poppins', sans-serif", textDecoration: "Underline" }}>
-				Register
-			</h1>
-			<div
-				className="register-form"
-				style={{
-					padding: '35px',
-					borderRadius: '12px',
-					border: '1px solid #ddd',
-					width: '600px',
-					boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.1)',
-				}}
-			>
-				<form className="input-fields" onSubmit={handleSubmit}>
-					<div style={{ marginBottom: '15px', position: "relative", right: "10px" }}>
-						<input
-							type="email"
-							name="email"
-							placeholder="Email ID"
-							value={formData.email}
-							onChange={handleChange}
-							style={{
-								width: '140%',
-								padding: '12px',
-								border: '1px solid #ccc',
-								borderRadius: '8px',
-								fontSize: '14px',
-								fontFamily: "'Poppins', sans-serif",
-								outline: 'none',
-							}}
-							disabled={isLoading}
-							required
-						/>
-					</div>
-					<div style={{ marginBottom: '15px', position: "relative", right: "10px" }}>
-						<input
-							type="text"
-							name="fullName"
-							placeholder="Full Name"
-							value={formData.fullName}
-							onChange={handleChange}
-							style={{
-								width: '140%',
-								padding: '12px',
-								border: '1px solid #ccc',
-								borderRadius: '8px',
-								fontSize: '14px',
-								fontFamily: "'Poppins', sans-serif",
-								outline: 'none',
-							}}
-							disabled={isLoading}
-							required
-						/>
-					</div>
-					<div style={{ marginBottom: '20px', position: "relative", right: "10px" }}>
-						<input
-							type="password"
-							name="password"
-							placeholder="Password"
-							value={formData.password}
-							onChange={handleChange}
-							style={{
-								width: '140%',
-								padding: '12px',
-								border: '1px solid #ccc',
-								borderRadius: '8px',
-								fontSize: '14px',
-								fontFamily: "'Poppins', sans-serif",
-								outline: 'none',
-							}}
-							disabled={isLoading}
-							required
-						/>
-					</div>
-					<div style={{ position: 'relative' }}>
-						<CtaButton
-							text={isLoading ? "Registering..." : "Register"}
+		<div className="auth-layout-wrapper">
+			{/* Left Side: Form */}
+			<div className="auth-form-section">
+				<a href="/" className="auth-brand-logo">
+					<img src="/favicon.ico" alt="ProctorAI" />
+					<span>ProctorAI</span>
+				</a>
+
+				<div className="auth-content-box">
+					<h1 className="auth-title">Create an account</h1>
+					<p className="auth-subtitle">Start running secure tests in minutes</p>
+
+					<form className="premium-form" onSubmit={handleSubmit}>
+						<div className="form-field">
+							<label>Email address</label>
+							<input
+								type="email"
+								name="email"
+								className="premium-input"
+								placeholder="admin@institution.edu"
+								value={formData.email}
+								onChange={handleChange}
+								disabled={isLoading}
+								required
+							/>
+						</div>
+
+						<div className="form-field">
+							<label>Full name</label>
+							<input
+								type="text"
+								name="fullName"
+								className="premium-input"
+								placeholder="Dr. Jane Smith"
+								value={formData.fullName}
+								onChange={handleChange}
+								disabled={isLoading}
+								required
+							/>
+						</div>
+
+						<div className="form-field">
+							<label>Password</label>
+							<input
+								type="password"
+								name="password"
+								className="premium-input"
+								placeholder="Create a strong password"
+								value={formData.password}
+								onChange={handleChange}
+								disabled={isLoading}
+								required
+							/>
+						</div>
+
+						<button
 							type="submit"
-							style={{
-								width: '100%',
-								padding: '12px',
-								fontSize: '16px',
-								fontWeight: 'bold',
-								borderRadius: '8px',
-								fontFamily: "'Poppins', sans-serif",
-							}}
+							className="premium-submit-btn"
 							disabled={isLoading}
-						/>
-						{isLoading && (
-							<div className="spinner" style={{
-								width: '20px',
-								height: '20px',
-								border: '3px solid rgba(0, 0, 0, 0.1)',
-								borderRadius: '50%',
-								borderTop: '3px solid #007BFF',
-								animation: 'spin 1s linear infinite',
-								position: 'absolute',
-								right: '-30px',
-								top: '50%',
-								transform: 'translateY(-50%)'
-							}}></div>
-						)}
+						>
+							{isLoading ? (
+								<>
+									<div className="spinner-icon"></div>
+									Creating account...
+								</>
+							) : "Create Account"}
+						</button>
+					</form>
+
+					<div className="auth-switch">
+						Already have an account?
+						<span
+							className="auth-switch-link"
+							onClick={() => navigate('/login')}
+							style={{ cursor: 'pointer' }}
+						>
+							Sign in
+						</span>
 					</div>
-				</form>
-				<p
-					style={{
-						textAlign: 'center',
-						fontSize: '14px',
-						fontFamily: "'Poppins', sans-serif",
-						marginTop: '15px'
-					}}
-				>
-					Already have an account?{' '}
-					<span
-						style={{ color: '#007BFF', cursor: 'pointer', textDecoration: 'underline' }}
-						onClick={() => navigate('/login')}
-					>
-						Login
-					</span>
-				</p>
+				</div>
 			</div>
 
-			<style>
-				{`
-					@keyframes spin {
-						0% { transform: rotate(0deg); }
-						100% { transform: rotate(360deg); }
-					}
-				`}
-			</style>
+			{/* Right Side: Visual/Art */}
+			<div className="auth-visual-section">
+				<div className="abstract-shape shape-1" style={{ background: 'rgba(56, 189, 248, 0.15)' }}></div>
+				<div className="abstract-shape shape-2" style={{ background: 'rgba(37, 99, 235, 0.3)', top: '10%', right: '10%' }}></div>
+
+				<div className="visual-content">
+					<h2>Built for modern assessments.</h2>
+					<p>Join thousands of educators relying on ProctorAI to maintain academic integrity seamlessly, securely, and completely free of charge.</p>
+				</div>
+			</div>
 		</div>
 	);
 };

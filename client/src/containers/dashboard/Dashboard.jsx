@@ -25,7 +25,7 @@ const Dashboard = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:5000/api/all-created-test', {
+        const response = await axios.get('https://proctorai2-1.onrender.com/api/all-created-test', {
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${token}`
@@ -60,7 +60,7 @@ const Dashboard = () => {
         return;
       }
 
-      const response = await axios.delete(`http://localhost:5000/api/tests/${testId}`, {
+      const response = await axios.delete(`https://proctorai2-1.onrender.com/api/tests/${testId}`, {
 
         headers: {
           Authorization: `Bearer ${token}`

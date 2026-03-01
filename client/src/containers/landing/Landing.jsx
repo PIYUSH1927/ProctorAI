@@ -6,12 +6,12 @@ import './landing.css';
 import { Link } from 'react-router-dom';
 
 const featureList = [
-    'Multiple People Detection',
-    'Mobile Phone Detection',
-    'Desktop Change Detection',
+	'Multiple People Detection',
+	'Mobile Phone Detection',
+	'Desktop Change Detection',
 	'Full Screen Check',
-    'Devtools Check',
-    'Multiple Tabs Check',
+	'Devtools Check',
+	'Multiple Tabs Check',
 ];
 
 const Landing = () => {
@@ -42,7 +42,7 @@ const Landing = () => {
 		}
 
 		try {
-			const response = await axios.post('http://localhost:5000/api/test-taker', {
+			const response = await axios.post('https://proctorai2-1.onrender.com/api/test-taker', {
 				testCode,
 				name,
 				registrationNumber,

@@ -5,3 +5,5 @@ export { default as Login } from './login/Login';
 export { default as Register } from './register/Register';
 export { default as Status } from './status/Status';
 export { default as Exam } from './exam/Exam';
+export { default as About } from './about/About';
+export { default as Contact } from './contact/Contact';

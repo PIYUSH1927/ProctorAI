@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import './weblivecapture.css';
 import axios from 'axios';
@@ -11,42 +11,42 @@ const videoConstraints = {
 
 const WebLiveCapture = ({ onPeopleCountChange }) => {
 	const webcamRef = React.useRef(null);
-	const [ image, setImage ] = useState('');
+	const [image, setImage] = useState('');
 	const [peopleCount, setPeopleCount] = useState(0);
 	const [phoneCount, setPhoneCount] = useState(0);
 
 
 	const capture = React.useCallback(() => {
-        const imageSrc = webcamRef.current.getScreenshot();
-        setImage(imageSrc);
+		const imageSrc = webcamRef.current.getScreenshot();
+		setImage(imageSrc);
 
-        axios.post('http://localhost:8080/predict_people', { img: imageSrc })
-            .then(response => {
+		axios.post('http://localhost:8080/predict_people', { img: imageSrc })
+			.then(response => {
 
 				const newPeopleCount = response.data.people;
-                const newPhoneCount = response.data.phones;
+				const newPhoneCount = response.data.phones;
 
-                
-					setPeopleCount(newPeopleCount);
-					setPhoneCount(newPhoneCount);
 
-					onPeopleCountChange(newPeopleCount, newPhoneCount);
-			
-            })
-            .catch(error => {
-                console.error('Error predicting people:', error);
-            });
-    }, [onPeopleCountChange]);
+				setPeopleCount(newPeopleCount);
+				setPhoneCount(newPhoneCount);
+
+				onPeopleCountChange(newPeopleCount, newPhoneCount);
+
+			})
+			.catch(error => {
+				console.error('Error predicting people:', error);
+			});
+	}, [onPeopleCountChange]);
 
 	useEffect(() => {
 
 		const interval = setInterval(() => {
 			capture();
-		}, 1000); 
+		}, 1000);
 
 
 		return () => clearInterval(interval);
-	},  [capture]);
+	}, [capture]);
 
 
 

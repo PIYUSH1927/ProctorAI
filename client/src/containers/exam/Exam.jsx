@@ -38,7 +38,7 @@ const Exam = ({ examName = '', formLink = '' }) => {
 
   const fetchExamDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/test-taker/${test_code}/${registration_number}`);
+      const response = await axios.get(`https://proctorai2-1.onrender.com/api/test-taker/${test_code}/${registration_number}`);
       const examData1 = response.data;
       if (examData1) {
         setDetails(examData1);
@@ -74,27 +74,27 @@ const Exam = ({ examName = '', formLink = '' }) => {
     setWarningCnt(newWarningCount + 1);
 
     if (newWarningCount > 3) {
-        terminateExam();
+      terminateExam();
     }
-};
+  };
 
 
-useEffect(() => {
+  useEffect(() => {
     const updateWarningCount = async () => {
-        if (warningCnt > 0) {  // Ensure warning count is valid before sending
-            try {
-                await axios.put(
-                    `http://localhost:5000/api/test-taker/${test_code}/${registration_number}/warningCount`,
-                    { warningCount: warningCnt }
-                );
-            } catch (error) {
-                console.error('Error updating warning count:', error);
-            }
+      if (warningCnt > 0) {  // Ensure warning count is valid before sending
+        try {
+          await axios.put(
+            `https://proctorai2-1.onrender.com/api/test-taker/${test_code}/${registration_number}/warningCount`,
+            { warningCount: warningCnt }
+          );
+        } catch (error) {
+          console.error('Error updating warning count:', error);
         }
+      }
     };
 
     updateWarningCount();
-}, [warningCnt]);
+  }, [warningCnt]);
 
   const overlay = document.getElementById('overlay');
   const formBlur = document.getElementById('form-blur');
@@ -164,13 +164,13 @@ useEffect(() => {
     if (peopleCount > 1) {
       setShowMessage('Warning: Multiple people detected. Your exam will be terminated if this is not addressed.');
       disableForm();
-      incrementWarningCount(); 
+      incrementWarningCount();
     } else if (peopleCount === 0) {
       setShowMessage('Warning: Your face is not visible. Your exam will be terminated if this is not addressed.');
       disableForm();
       incrementWarningCount();
     } else if (peopleCount === 1) {
-      setShowMessage(''); 
+      setShowMessage('');
       enableForm();
     }
     if (phoneCount > 0) {
@@ -206,7 +206,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchAllTests = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/all-tests');
+        const response = await fetch('https://proctorai2-1.onrender.com/api/all-tests');
 
         if (!response.ok) {
           throw new Error('Failed to fetch test details');
