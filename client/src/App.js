@@ -8,12 +8,9 @@ import {
   Register,
   Status,
   Exam,
-  innerWidth
 } from './containers';
-//import
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-
 import Cookies from 'js-cookie';
 
 const App = () => {
