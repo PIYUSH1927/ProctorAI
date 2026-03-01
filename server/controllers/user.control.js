@@ -51,7 +51,12 @@ const signIn = (req, res) => {
 
                     const expires = new Date();
                     expires.setDate(expires.getDate() + 2); 
-                    res.cookie('token', token, { httpOnly: true, expires });
+                    res.cookie('token', token, {
+                        httpOnly: true,        // For security: can't be accessed by JavaScript
+                        secure: true,          // Always use HTTPS in production
+                        sameSite: 'None',      // For cross-origin requests
+                        expires: expires               // Set cookie expiration
+                    });
 
                     res.status(200).json({
                         token,

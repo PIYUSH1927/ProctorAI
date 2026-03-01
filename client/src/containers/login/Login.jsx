@@ -38,7 +38,7 @@ const Login = () => {
 
 			if (response.status === 200) {
 				localStorage.setItem('token', response.data.token);
-				Cookies.set('token', response.data.token, { expires: 7, secure: true, sameSite: 'Strict' });
+				Cookies.set('token', response.data.token, { expires: 7 });
 				Cookies.set('userId', userId, { expires: 1 });
 
 				return true;
